@@ -56,10 +56,16 @@ public class ApexGrouping {
             for (CSVRecord csvRecord : csvParser2) {
                 if(csvRecord.getRecordNumber() != 1) {
                     Student stu = new Student(csvRecord.get(0),csvRecord.get(1), maxSessions);
-                    ArrayList<Session>[] list = new ArrayList[maxSessions-1];
+                    ArrayList<Session>[] list = new ArrayList[maxSessions];
+                    for(int j = 0; j < list.length;j++) {
+                        list[j] = new ArrayList<>();
+                    }
                     for(int i = 2; i < csvRecord.size();i+=2) {
                         int round = Integer.parseInt(csvRecord.get(i));
                         list[round-1].add(getSession(csvRecord.get(i+1)));
+                        if(getSession(csvRecord.get(i+1)) == null) {
+                            System.out.println("Student " + stu.getName() + " - round " + round + " - preferences not found: " + csvRecord.get(i+1));
+                        }
                     }
                     stu.setPrefer(list);
                     studentList.add(stu);
@@ -67,12 +73,10 @@ public class ApexGrouping {
             }
 
         }
-
         catch(Exception ignored) {
             System.out.println(ignored);
         }
     }
-
     public Session getSession(String title) {
         for(int i = 0; i < sessionList.size();i++) {
             if(sessionList.get(i).getPresentation().equals(title)) {

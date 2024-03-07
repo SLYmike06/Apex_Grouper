@@ -8,16 +8,17 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class ApexGrouping {
-    private ArrayList<Student> studentList;
-    private ArrayList<Session> sessionList;
-    private ArrayList<Configuration> configs;
-    private int sizeLimit;
+    public ArrayList<Student> studentList;
+    public ArrayList<Session> sessionList;
+    public ArrayList<Configuration> configs;
+    public int sizeLimit;
 
     public static void main(String[] args) {
         ApexGrouping test = new ApexGrouping();
-        test.printSession();
-        test.printStudent();
-
+      //  test.printSession();
+      //  test.printStudent();
+       // test.printPreferences();
+        test.generateRandomConfig();
     }
 
     private void printStudent() {
@@ -30,6 +31,10 @@ public class ApexGrouping {
         for(Session a: sessionList) {
             System.out.println(a);
         }
+    }
+
+    public void printRound() {
+
     }
 
     public ApexGrouping() {
@@ -64,7 +69,7 @@ public class ApexGrouping {
                         int round = Integer.parseInt(csvRecord.get(i));
                         list[round-1].add(getSession(csvRecord.get(i+1)));
                         if(getSession(csvRecord.get(i+1)) == null) {
-                            System.out.println("Student " + stu.getName() + " - round " + round + " - preferences not found: " + csvRecord.get(i+1));
+                       //     System.out.println("Student " + stu.getName() + " - round " + round + " - preferences not found: " + csvRecord.get(i+1));
                         }
                     }
                     stu.setPrefer(list);
@@ -85,6 +90,51 @@ public class ApexGrouping {
         }
         return null;
     }
+
+    public void printPreferences() {
+        for(Session session: sessionList) {
+            if(session.roundNum == 1) {
+                System.out.print("Session name: " + session.presentation);
+                for (int i = 0; i < 4; i++) {
+                    int count = 0;
+                    for (Student student : studentList) {
+                        if (student.prefer[0].get(i) == session) {
+                            count++;
+                        }
+                    }
+                    System.out.print(" " + count);
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    public void generateRandomConfig() {
+        Configuration config = new Configuration();
+        for(int i = 1; i <= 1; i ++) {
+            Round round = new Round(i, sessionList);
+            round.generateRandomRound(studentList);
+            round.printRound();
+            config.rounds.add(round);
+        }
+        configs.add(config);
+    }
+
+    public void generateAllCombinations(ArrayList<Configuration> confg, Configuration currentConfig, int roundCount, Roster roster) {
+        if(roundCount == 30) {
+
+        }
+    }
+
+//    private static Configuration copy(Configuration config) {
+//        Configuration copied = new Configuration();
+//        ArrayList<Round> rounds = new ArrayList<>();
+//        for(Round round: copied.rounds) {
+//            rounds.add(round.copy());
+//        }
+//        copied.rounds = rounds;
+//        return copied;
+//    }
 
 //    public boolean verifyData(Session element) {
 //        for(int i = 0; i < preferenceList.size();i++) {

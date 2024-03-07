@@ -1,7 +1,7 @@
 public class Session {
-    private String presentation;
-    private int roundNum;
-    private int limit;
+    public String presentation;
+    public int roundNum;
+    public int limit;
 
     public Session(String name, int roundNum, int limit) {
         this.presentation = name;

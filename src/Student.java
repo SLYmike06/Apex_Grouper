@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class Student {
-    private String name;
-    private ArrayList<Session>[]  prefer;
-    private String email;
-    private int maxSessions;
+    public String name;
+    public ArrayList<Session>[]  prefer;
+    public String email;
+    public int maxSessions;
     public Student(String name, String email, int maxSessions) {
         this.name = name;
         this.email = email;

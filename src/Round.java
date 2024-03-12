@@ -4,15 +4,30 @@ import java.util.Random;
 public class Round {
     public ArrayList<Roster> rosterList;
     public int round;
+    public int[] count;
+
+    public double roundScore;
 
 
     public Round(int round, ArrayList<Session> sessionList) {
         this.rosterList = new ArrayList<Roster>();
         this.round = round;
         for(Session session: sessionList) {
-            if(session.roundNum-1 == round) {
+            if(session.roundNum == round) {
                 rosterList.add(new Roster(session));
             }
+        }
+        count = new int[4];
+    }
+
+    public void score() {
+        for(Roster roster: rosterList) {
+            roster.score(round);
+            roundScore += roster.rosterScore;
+            count[0] +=roster.count[0];
+            count[1] +=roster.count[1];
+            count[2] +=roster.count[2];
+            count[3] +=roster.count[3];
         }
     }
 
@@ -30,10 +45,10 @@ public class Round {
     public void generateRandomRound(ArrayList<Student> studentList) {
         Random rand = new Random();
         for(Student student: studentList) {
-                Session possible = student.prefer[round].get(rand.nextInt(student.prefer[round].size()));
+                Session possible = student.prefer[round-1].get(rand.nextInt(student.prefer[round-1].size()));
                 boolean check = addStudent(possible, student);
                 if(!check) {
-                    for(Session session: student.prefer[round]) {
+                    for(Session session: student.prefer[round-1]) {
                         if(addStudent(session,student)) {
                             break;
                         }
@@ -50,6 +65,7 @@ public class Round {
         }
         System.out.println(rosterSize);
     }
+
     public int findRoster(Session session) {
         for(Roster roster: rosterList) {
             if(roster.session == session) {

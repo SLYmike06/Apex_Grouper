@@ -3,16 +3,19 @@ import java.util.ArrayList;
 public class Roster {
     public Session session;
     public ArrayList<Student> stuList;
-    int groupScore;
+    double rosterScore;
+
+    public int[] count;
     public Roster(Session session) {
         this.session = session;
+        count = new int[4];
         stuList = new ArrayList<Student>();
     }
 
     public Roster copy() {
         Roster copyRoster = new Roster(this.session);
         copyRoster.stuList = (ArrayList<Student>) this.stuList.clone();
-        copyRoster.groupScore = this.groupScore;
+        copyRoster.rosterScore = this.rosterScore;
         return copyRoster;
     }
 
@@ -24,6 +27,39 @@ public class Roster {
         return output.toString();
     }
 
+
+    public void score(int round) {
+        rosterScore = 0;
+        for (int i = 0; i < stuList.size(); i++) {
+            Student curr = stuList.get(i);
+            ArrayList<Session> listOfPrefer = curr.prefer[round-1];
+            for (int k = 0; k < listOfPrefer.size(); k++) {
+               if(listOfPrefer.get(k) == session) {
+                       switch (k) {
+                           case 0:
+                               rosterScore += 4;
+                               count[0]++;
+                               break;
+                           case 1:
+                               rosterScore += 3.3;
+                               count[1]++;
+
+                               break;
+                           case 2:
+                               rosterScore += 2.5;
+                               count[2]++;
+
+                               break;
+                           case 3:
+                               rosterScore += 1.6;
+                               count[3]++;
+
+                               break;
+                   }
+               }
+            }
+        }
+    }
     public ArrayList<Student> getStuList() {
         return stuList;
     }

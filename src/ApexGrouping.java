@@ -19,6 +19,16 @@ public class ApexGrouping {
       //  test.printStudent();
        // test.printPreferences();
         test.generateRandomConfig();
+        test.configs.get(0).score();
+        System.out.println(test.configs.get(0).configScore);
+        System.out.println(test.configs.get(0).count[0]);
+        System.out.println(test.configs.get(0).count[1]);
+
+        System.out.println(test.configs.get(0).count[2]);
+
+        System.out.println(test.configs.get(0).count[3]);
+
+
     }
 
     private void printStudent() {

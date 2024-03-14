@@ -7,10 +7,10 @@ public class Configuration {
     public Configuration(ArrayList<Round> configs) {
         this.configScore = configScore;
         this.rounds = configs;
-        count = new int[4];
     }
 
     public void score() {
+        count = new int[4];
         for(Round round: rounds) {
             round.score();
             configScore += round.roundScore;

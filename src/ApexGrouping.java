@@ -11,22 +11,36 @@ public class ApexGrouping {
     public ArrayList<Student> studentList;
     public ArrayList<Session> sessionList;
     public ArrayList<Configuration> configs;
-    public int sizeLimit;
+    private  PriorityQueue<Configuration> pq = new PriorityQueue<Configuration>(new Comparator<Configuration>() {
+        public int compare(Configuration s1, Configuration s2) {
+            if(s1.configScore < s2.configScore) {
+                return 1;
+            } else if(s1.configScore >= s2.configScore) {
+                return -1;
+            }
+            return 0;
+        }
+    });
+
+        public int sizeLimit;
 
     public static void main(String[] args) {
         ApexGrouping test = new ApexGrouping();
       //  test.printSession();
       //  test.printStudent();
        // test.printPreferences();
-        test.generateRandomConfig();
-        test.configs.get(0).score();
-        System.out.println(test.configs.get(0).configScore);
-        System.out.println(test.configs.get(0).count[0]);
+//        test.generateRandomConfig();
+//        test.configs.get(0).score();
+//
+        Configuration t = test.generateBestConfig(1);
+        System.out.println(t.configScore);
+        System.out.println("wjdaidwodwnadwndo  " + test.configs.get(0).count[0]);
         System.out.println(test.configs.get(0).count[1]);
 
         System.out.println(test.configs.get(0).count[2]);
 
         System.out.println(test.configs.get(0).count[3]);
+        test.tttt();
 
 
     }
@@ -41,6 +55,15 @@ public class ApexGrouping {
         for(Session a: sessionList) {
             System.out.println(a);
         }
+    }
+
+    public void tttt() {
+        generateRandomConfig();
+        Configuration cc = configs.get(0);
+        Round dd = cc.rounds.get(0);
+        ArrayList<Student> fd = dd.retrieve(1);
+        System.out.println("dddd " + fd.size());
+
     }
 
     public void printRound() {
@@ -121,13 +144,23 @@ public class ApexGrouping {
 
     public void generateRandomConfig() {
         Configuration config = new Configuration();
-        for(int i = 1; i <= 1; i ++) {
+        for(int i = 1 ; i <= 1; i ++) {
             Round round = new Round(i, sessionList);
             round.generateRandomRound(studentList);
+            round.score();
             round.printRound();
             config.rounds.add(round);
         }
+        config.score();
         configs.add(config);
+    }
+
+    public Configuration generateBestConfig(int num) {
+        for(int i = 0; i < num;i++) {
+            generateRandomConfig();
+            pq.add(configs.get(i));
+        }
+        return pq.peek();
     }
 
     public void generateAllCombinations(ArrayList<Configuration> confg, Configuration currentConfig, int roundCount, Roster roster) {

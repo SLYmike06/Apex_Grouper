@@ -8,7 +8,6 @@ public class Roster {
     public int[] count;
     public Roster(Session session) {
         this.session = session;
-        count = new int[4];
         stuList = new ArrayList<Student>();
     }
 
@@ -30,6 +29,7 @@ public class Roster {
 
     public void score(int round) {
         rosterScore = 0;
+        count = new int[4];
         for (int i = 0; i < stuList.size(); i++) {
             Student curr = stuList.get(i);
             ArrayList<Session> listOfPrefer = curr.prefer[round-1];

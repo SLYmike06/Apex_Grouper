@@ -17,10 +17,11 @@ public class Round {
                 rosterList.add(new Roster(session));
             }
         }
-        count = new int[4];
     }
 
     public void score() {
+        count = new int[4];
+        roundScore = 0;
         for(Roster roster: rosterList) {
             roster.score(round);
             roundScore += roster.rosterScore;
@@ -43,19 +44,36 @@ public class Round {
 
 
     public void generateRandomRound(ArrayList<Student> studentList) {
-        Random rand = new Random();
+       // Random rand = new Random();
         for(Student student: studentList) {
-                Session possible = student.prefer[round-1].get(rand.nextInt(student.prefer[round-1].size()));
-                boolean check = addStudent(possible, student);
-                if(!check) {
+               // Session possible = student.prefer[round-1].get(rand.nextInt(student.prefer[round-1].size()));
+               // boolean check = addStudent(possible, student);
+                //if(!check) {
                     for(Session session: student.prefer[round-1]) {
                         if(addStudent(session,student)) {
                             break;
                         }
                     }
-                }
+               // }
             }
     }
+    public ArrayList<Student> retrieve(int preferenceNumber) {
+        ArrayList<Student> total = new ArrayList<Student>();
+        for(Roster roster: this.rosterList) {
+            for(Student student: roster.stuList) {
+                ArrayList<Session> preference = student.prefer[round-1];
+                for(int i = 0; i < preference.size();i++) {
+                    if(roster.session == preference.get(i) && i+1 == preferenceNumber) {
+                        total.add(student);
+                    }
+                }
+            }
+        }
+        return total;
+    }
+//    public boolean bump(Session session, int score) {
+//
+//    }
 
     public void printRound() {
         int rosterSize = 0;

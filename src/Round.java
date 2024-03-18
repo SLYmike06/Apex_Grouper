@@ -57,41 +57,66 @@ public class Round {
                // }
             }
     }
-    public ArrayList<Student> retrieve(int preferenceNumber) {
+    public ArrayList<Student> retrieveStudentsHavingPrefer(int preferenceNumber) {
         ArrayList<Student> total = new ArrayList<Student>();
-        for(Roster roster: this.rosterList) {
-            for(Student student: roster.stuList) {
-                ArrayList<Session> preference = student.prefer[round-1];
-                for(int i = 0; i < preference.size();i++) {
-                    if(roster.session == preference.get(i) && i+1 == preferenceNumber) {
-                        total.add(student);
+        if(preferenceNumber == 0) {
+            for (Roster roster : this.rosterList) {
+                for (Student student : roster.stuList) {
+                    ArrayList<Session> preference = student.prefer[round - 1];
+                    for (int i = 0; i < preference.size(); i++) {
+                        if (roster.session != preference.get(i)) {
+                            total.add(student);
+                        }
                     }
                 }
             }
+            return total;
+        } else {
+            for (Roster roster : this.rosterList) {
+                for (Student student : roster.stuList) {
+                    ArrayList<Session> preference = student.prefer[round - 1];
+                    for (int i = 0; i < preference.size(); i++) {
+                        if (roster.session == preference.get(i) && i + 1 == preferenceNumber) {
+                            total.add(student);
+                        }
+                    }
+                }
+            }
+            return total;
         }
-        return total;
     }
 
     public boolean alter(int preferNum) {
-        ArrayList<Student> students = retrieve(preferNum);
+        //[current][new]
+        double[][] scoreChange = {{0.0,-0.7,-1.5,-2.4},{0.7,0.0,-0.8,-1.7},{1.5,0.8,0,-0.9},{2.4,1.7,0.9,0}};
+        ArrayList<Student> students = retrieveStudentsHavingPrefer(preferNum);
         for(Student student: students) {
-            ArrayList<Session> prev = new ArrayList<>();
             for(int i = 0; i < preferNum;i++) {
-                prev.add(student.prefer[0].get(i));
-            }
-            for(Session session: prev) {
-                if(bump(session,10)) {
-                    return true;
+                Session session = student.prefer[round-1].get(i);
+                if(bump(session,scoreChange[preferNum][i])) {
+                    addStudent(session, student);
                 }
             }
+
         }
         return false;
     }
-    //hi
-    //loop for someone to bump thats valuable
-    public boolean bump(Session session, int maxScoreDrop) {
+    //bump pushes the student out of this session, returns true if succeussful
+    public boolean bump(Session session, double bumpValue) {
+        Roster roster = getRosterFromSession(session);
+        for(Student student: roster.stuList) {
+            ArrayList<Session> prefer = student.prefer[round-1];
 
+        }
         return false;
+    }
+    public Roster getRosterFromSession(Session session) {
+        for(Roster roster: this.rosterList) {
+            if(roster.session == session) {
+                return roster;
+            }
+        }
+        return null;
     }
 
     public void printRound() {

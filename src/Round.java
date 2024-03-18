@@ -71,9 +71,27 @@ public class Round {
         }
         return total;
     }
-//    public boolean bump(Session session, int score) {
-//
-//    }
+
+    public boolean alter(int preferNum) {
+        ArrayList<Student> students = retrieve(preferNum);
+        for(Student student: students) {
+            ArrayList<Session> prev = new ArrayList<>();
+            for(int i = 0; i < preferNum;i++) {
+                prev.add(student.prefer[0].get(i));
+            }
+            for(Session session: prev) {
+                if(bump(session,10)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    //loop for someone to bump thats valuable
+    public boolean bump(Session session, int maxScoreDrop) {
+
+        return false;
+    }
 
     public void printRound() {
         int rosterSize = 0;

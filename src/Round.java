@@ -87,6 +87,7 @@ public class Round {
         }
         return false;
     }
+    //hi
     //loop for someone to bump thats valuable
     public boolean bump(Session session, int maxScoreDrop) {
 

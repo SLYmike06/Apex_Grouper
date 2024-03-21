@@ -24,6 +24,15 @@ public class Student {
         return output.toString();
     }
 
+    public int getPreferenceIndex(Session session) {
+        for(int i = 0; i < prefer[session.roundNum].size();i++) {
+            if(prefer[session.roundNum].get(i) == session) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public String getName() {
         return name;
     }

@@ -61,7 +61,7 @@ public class ApexGrouping {
         generateRandomConfig();
         Configuration cc = configs.get(0);
         Round dd = cc.rounds.get(0);
-        ArrayList<Student> fd = dd.retrieve(1);
+        ArrayList<Student> fd = dd.retrieveStudentsHavingPrefer(1);
         System.out.println("dddd " + fd.size());
 
     }

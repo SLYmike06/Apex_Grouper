@@ -7,6 +7,8 @@ public class Round {
     public int[] count;
 
     public double roundScore;
+    public double[][] scoreChange = {{0.0,-0.7,-1.5,-2.4},{0.7,0.0,-0.8,-1.7},{1.5,0.8,0,-0.9},{2.4,1.7,0.9,0}};
+
 
 
     public Round(int round, ArrayList<Session> sessionList) {
@@ -86,14 +88,13 @@ public class Round {
         }
     }
 
-    public boolean alter(int preferNum) {
+    public boolean improveScoreStudentByStudent(int preferNum) {
         //[current][new]
-        double[][] scoreChange = {{0.0,-0.7,-1.5,-2.4},{0.7,0.0,-0.8,-1.7},{1.5,0.8,0,-0.9},{2.4,1.7,0.9,0}};
         ArrayList<Student> students = retrieveStudentsHavingPrefer(preferNum);
         for(Student student: students) {
             for(int i = 0; i < preferNum;i++) {
                 Session session = student.prefer[round-1].get(i);
-                if(bump(session,scoreChange[preferNum][i])) {
+                if(bump(session,this.scoreChange[preferNum][i])) {
                     addStudent(session, student);
                 }
             }
@@ -101,12 +102,23 @@ public class Round {
         }
         return false;
     }
-    //bump pushes the student out of this session, returns true if succeussful
-    public boolean bump(Session session, double bumpValue) {
+    //bump tries to push a student out of this session, returns true if succeussful
+    public boolean bump(Session session, double bumpScore) {
         Roster roster = getRosterFromSession(session);
-        for(Student student: roster.stuList) {
-            ArrayList<Session> prefer = student.prefer[round-1];
+        for(int i = roster.stuList.size()-1; i >= 0; i--) {
+            if(bumpStudent(roster.stuList.get(i),session, bumpScore)){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public boolean bumpStudent(Student student, Session session, double bumpScore) {
+        int index = student.getPreferenceIndex(session);
+        for(int i = index+1; i < 4; i++) {
+            if(Math.abs(scoreChange[index][i]) < bumpScore) {
+                return addStudent(session, student);
+            }
         }
         return false;
     }
@@ -136,6 +148,8 @@ public class Round {
         }
         return -1;
     }
+
+
 
     public boolean addStudent(Session session, Student student) {
         int matchRosterIndex = findRoster(session);

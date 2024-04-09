@@ -33,6 +33,10 @@ public class ApexGrouping {
 //        test.configs.get(0).score();
 //
         Configuration t = test.generateBestConfig(1);
+            for(Round round: t.rounds) {
+                round.improveScoreStudentByStudent(4);
+            }
+
         System.out.println(t.configScore);
         System.out.println("wjdaidwodwnadwndo  " + test.configs.get(0).count[0]);
         System.out.println(test.configs.get(0).count[1]);

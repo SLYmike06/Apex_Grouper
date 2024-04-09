@@ -7,7 +7,12 @@ public class Round {
     public int[] count;
 
     public double roundScore;
-    public double[][] scoreChange = {{0.0,-0.7,-1.5,-2.4},{0.7,0.0,-0.8,-1.7},{1.5,0.8,0,-0.9},{2.4,1.7,0.9,0}};
+    public double[][] scoreChange = {{+0.0, +4.0, +3.3, +2.5, +1.6},
+                                     {-4.0, +0.0, -0.7, -1.5, -2.4},
+                                     {-3.3, +0.7, +0.0, -0.8, -1.7},
+                                     {-2.5, +1.5, +0.8, +0.0, -0.9},
+                                     {-1.6, +2.4, +1.7, +0.9, +0.0}}
+    ;
 
 
 
@@ -92,8 +97,8 @@ public class Round {
         //[current][new]
         ArrayList<Student> students = retrieveStudentsHavingPrefer(preferNum);
         for(Student student: students) {
-            for(int i = 0; i < preferNum;i++) {
-                Session session = student.prefer[round-1].get(i);
+            for(int i = 1; i <= preferNum;i++) {
+                Session session = student.prefer[round-1].get(i-1);
                 if(bump(session,this.scoreChange[preferNum][i])) {
                     addStudent(session, student);
                 }
@@ -114,9 +119,9 @@ public class Round {
     }
 
     public boolean bumpStudent(Student student, Session session, double bumpScore) {
-        int index = student.getPreferenceIndex(session);
-        for(int i = index+1; i < 4; i++) {
-            if(Math.abs(scoreChange[index][i]) < bumpScore) {
+        int currentPrefer = student.getPreferenceIndex(session);
+        for(int i = currentPrefer+1; i <= 4; i++) {
+            if(Math.abs(scoreChange[currentPrefer][i]) < bumpScore) {
                 return addStudent(session, student);
             }
         }

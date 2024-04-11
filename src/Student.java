@@ -25,7 +25,7 @@ public class Student {
     }
 
     public int getPreferenceIndex(Session session) {
-        for(int i = 0; i < prefer[session.roundNum].size();i++) {
+        for(int i = 0; i < prefer[session.roundNum-1].size();i++) {
             if(prefer[session.roundNum-1].get(i) == session) {
                 return i+1;
             }

@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class ApexGrouping {
-    public ArrayList<Student> studentList;
+    public static ArrayList<Student> studentList;
     public ArrayList<Session> sessionList;
     public ArrayList<Configuration> configs;
     private  PriorityQueue<Configuration> pq = new PriorityQueue<Configuration>(new Comparator<Configuration>() {
@@ -33,19 +33,28 @@ public class ApexGrouping {
 //        test.configs.get(0).score();
 //
         Configuration t = test.generateBestConfig(1);
-            for(Round round: t.rounds) {
-                round.improveScoreStudentByStudent(4);
-            }
+        System.out.println("before: " + t.configScore);
 
-        System.out.println(t.configScore);
-        System.out.println("wjdaidwodwnadwndo  " + test.configs.get(0).count[0]);
-        System.out.println(test.configs.get(0).count[1]);
 
-        System.out.println(test.configs.get(0).count[2]);
+//
+//        for(Round round: t.rounds) {
+////                for(int i = 0; i < 4; i++) {
+////                    round.improveScoreStudentByStudent(i);
+////
+////                }
+//            round.improveScoreStudentByStudent(studentList,0);
+//
+//        }
 
-        System.out.println(test.configs.get(0).count[3]);
-        test.tttt();
-
+        System.out.println("after: " + t.configScore);
+//        System.out.println("wjdaidwodwnadwndo  " + test.configs.get(0).count[0]);
+//        System.out.println(test.configs.get(0).count[1]);
+//
+//        System.out.println(test.configs.get(0).count[2]);
+//
+//        System.out.println(test.configs.get(0).count[3]);
+//        test.tttt();
+//
 
     }
 
@@ -83,7 +92,7 @@ public class ApexGrouping {
     public void readFile() {
         try {
             int maxSessions = 0;
-            Reader file1 = Files.newBufferedReader(Paths.get("./Apex Sessions.csv"));
+            Reader file1 = Files.newBufferedReader(Paths.get("./Test Sessions.csv"));
             CSVParser csvParser = new CSVParser(file1, CSVFormat.DEFAULT);
             for (CSVRecord csvRecord : csvParser) {
                 if(csvRecord.getRecordNumber() != 1) {
@@ -93,7 +102,7 @@ public class ApexGrouping {
                     sessionList.add(new Session(csvRecord.get(1),Integer.parseInt(csvRecord.get(0)),Integer.parseInt(csvRecord.get(2))));
                 }
             }
-            Reader file2 = Files.newBufferedReader(Paths.get("./Apex Signups.csv"));
+            Reader file2 = Files.newBufferedReader(Paths.get("./Test Signups.csv"));
             CSVParser csvParser2 = new CSVParser(file2, CSVFormat.DEFAULT);
             for (CSVRecord csvRecord : csvParser2) {
                 if(csvRecord.getRecordNumber() != 1) {
@@ -106,7 +115,7 @@ public class ApexGrouping {
                         int round = Integer.parseInt(csvRecord.get(i));
                         list[round-1].add(getSession(csvRecord.get(i+1)));
                         if(getSession(csvRecord.get(i+1)) == null) {
-                       //     System.out.println("Student " + stu.getName() + " - round " + round + " - preferences not found: " + csvRecord.get(i+1));
+                            System.out.println("Student " + stu.getName() + " - round " + round + " - preferences not found: " + csvRecord.get(i+1));
                         }
                     }
                     stu.setPrefer(list);

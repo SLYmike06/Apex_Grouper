@@ -60,8 +60,13 @@ public class Roster {
             }
         }
     }
-    public ArrayList<Student> getStuList() {
-        return stuList;
+    public boolean isStuInRoster(Student student) {
+        for(Student stu: stuList) {
+            if(stu == student) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -64,21 +65,20 @@ public class Round {
                // }
             }
     }
+    public ArrayList<Student> retrieveStudentsHaving0Prefer(ArrayList<Student>stuList) {
+        ArrayList<Student> total = new ArrayList<Student>();
+        for (Student student : stuList) {
+            boolean flag = false;
+                for(Roster roster: this.rosterList) {
+                    if(roster.isStuInRoster(student)) flag = true;
+                }
+                if(!flag) total.add(student);
+        }
+        return total;
+    }
+
     public ArrayList<Student> retrieveStudentsHavingPrefer(int preferenceNumber) {
         ArrayList<Student> total = new ArrayList<Student>();
-        if(preferenceNumber == 0) {
-            for (Roster roster : this.rosterList) {
-                for (Student student : roster.stuList) {
-                    ArrayList<Session> preference = student.prefer[round - 1];
-                    for (int i = 0; i < preference.size(); i++) {
-                        if (roster.session != preference.get(i)) {
-                            total.add(student);
-                        }
-                    }
-                }
-            }
-            return total;
-        } else {
             for (Roster roster : this.rosterList) {
                 for (Student student : roster.stuList) {
                     ArrayList<Session> preference = student.prefer[round - 1];
@@ -90,20 +90,32 @@ public class Round {
                 }
             }
             return total;
-        }
     }
 
-    public boolean improveScoreStudentByStudent(int preferNum) {
+    public boolean improveScoreStudentByStudent(ArrayList<Student> stuList, int preferNum) {
         //[current][new]
-        ArrayList<Student> students = retrieveStudentsHavingPrefer(preferNum);
+        ArrayList<Student> students;
+        if(preferNum != 0) {
+            students = retrieveStudentsHavingPrefer(preferNum);
+        } else {
+            students = retrieveStudentsHaving0Prefer(stuList);
+        }
         for(Student student: students) {
-            for(int i = 1; i <= preferNum;i++) {
-                Session session = student.prefer[round-1].get(i-1);
-                if(bump(session,this.scoreChange[preferNum][i])) {
-                    addStudent(session, student);
+            if(preferNum == 0) {
+                for(int i = 1; i <= 4;i++) {
+                    Session session = student.prefer[round-1].get(i-1);
+                    if(bump(session,this.scoreChange[preferNum][i])) {
+                        addStudent(session, student);
+                    }
+                }
+            } else {
+                for(int i = 1; i <= preferNum;i++) {
+                    Session session = student.prefer[round-1].get(i-1);
+                    if(bump(session,this.scoreChange[preferNum][i])) {
+                        addStudent(session, student);
+                    }
                 }
             }
-
         }
         return false;
     }
@@ -122,7 +134,8 @@ public class Round {
         int currentPrefer = student.getPreferenceIndex(session);
         for(int i = currentPrefer+1; i <= 4; i++) {
             if(Math.abs(scoreChange[currentPrefer][i]) < bumpScore) {
-                return addStudent(session, student);
+                removeStuFromRoster(student, session);
+                return addStudent(student.prefer[round-1].get(currentPrefer), student);
             }
         }
         return false;
@@ -134,6 +147,11 @@ public class Round {
             }
         }
         return null;
+    }
+
+    public void removeStuFromRoster(Student student, Session session) {
+        Roster roster = findRos(session);
+        roster.stuList.remove(student);
     }
 
     public void printRound() {
@@ -154,11 +172,20 @@ public class Round {
         return -1;
     }
 
+    public Roster findRos(Session session) {
+        for(Roster roster: rosterList) {
+            if(roster.session == session) {
+                return roster;
+            }
+        }
+        return null;
+    }
+
 
 
     public boolean addStudent(Session session, Student student) {
         int matchRosterIndex = findRoster(session);
-        if(matchRosterIndex != -1 && rosterList.get(matchRosterIndex).stuList.size() < session.limit) {
+        if(matchRosterIndex != -1 && rosterList.get(matchRosterIndex).stuList.size() <= session.limit) {
             rosterList.get(matchRosterIndex).stuList.add(student);
             return true;
         }

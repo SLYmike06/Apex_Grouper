@@ -34,19 +34,23 @@ public class ApexGrouping {
 //
         Configuration t = test.generateBestConfig(1);
         System.out.println("before: " + t.configScore);
-
+        Round round = t.rounds.get(0);
+        round.printRoster();
 
 //
-//        for(Round round: t.rounds) {
-////                for(int i = 0; i < 4; i++) {
-////                    round.improveScoreStudentByStudent(i);
-////
-////                }
-//            round.improveScoreStudentByStudent(studentList,0);
+        for(Round rounds: t.rounds) {
+//                for(int i = 0; i < 4; i++) {
+//                    round.improveScoreStudentByStudent(i);
 //
-//        }
+//                }
+            rounds.improveScoreStudentByStudent(studentList,0);
+
+        }
 
         System.out.println("after: " + t.configScore);
+        round.printRoster();
+
+
 //        System.out.println("wjdaidwodwnadwndo  " + test.configs.get(0).count[0]);
 //        System.out.println(test.configs.get(0).count[1]);
 //
@@ -92,7 +96,7 @@ public class ApexGrouping {
     public void readFile() {
         try {
             int maxSessions = 0;
-            Reader file1 = Files.newBufferedReader(Paths.get("./Test Sessions.csv"));
+            Reader file1 = Files.newBufferedReader(Paths.get("./Test Sessions2.csv"));
             CSVParser csvParser = new CSVParser(file1, CSVFormat.DEFAULT);
             for (CSVRecord csvRecord : csvParser) {
                 if(csvRecord.getRecordNumber() != 1) {
@@ -102,7 +106,7 @@ public class ApexGrouping {
                     sessionList.add(new Session(csvRecord.get(1),Integer.parseInt(csvRecord.get(0)),Integer.parseInt(csvRecord.get(2))));
                 }
             }
-            Reader file2 = Files.newBufferedReader(Paths.get("./Test Signups.csv"));
+            Reader file2 = Files.newBufferedReader(Paths.get("./Test Signups2.csv"));
             CSVParser csvParser2 = new CSVParser(file2, CSVFormat.DEFAULT);
             for (CSVRecord csvRecord : csvParser2) {
                 if(csvRecord.getRecordNumber() != 1) {

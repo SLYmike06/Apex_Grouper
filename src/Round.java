@@ -100,12 +100,14 @@ public class Round {
         } else {
             students = retrieveStudentsHaving0Prefer(stuList);
         }
+        studentloop:
         for(Student student: students) {
             if(preferNum == 0) {
                 for(int i = 1; i <= 4;i++) {
                     Session session = student.prefer[round-1].get(i-1);
                     if(bump(session,this.scoreChange[preferNum][i])) {
                         addStudent(session, student);
+                        break studentloop;
                     }
                 }
             } else {
@@ -113,6 +115,7 @@ public class Round {
                     Session session = student.prefer[round-1].get(i-1);
                     if(bump(session,this.scoreChange[preferNum][i])) {
                         addStudent(session, student);
+                        break studentloop;
                     }
                 }
             }
@@ -134,8 +137,10 @@ public class Round {
         int currentPrefer = student.getPreferenceIndex(session);
         for(int i = currentPrefer+1; i <= 4; i++) {
             if(Math.abs(scoreChange[currentPrefer][i]) < bumpScore) {
-                removeStuFromRoster(student, session);
-                return addStudent(student.prefer[round-1].get(currentPrefer), student);
+                if(addStudent(student.prefer[round-1].get(currentPrefer), student)) {
+                    removeStuFromRoster(student, session);
+                    return true;
+                }
             }
         }
         return false;
@@ -185,10 +190,16 @@ public class Round {
 
     public boolean addStudent(Session session, Student student) {
         int matchRosterIndex = findRoster(session);
-        if(matchRosterIndex != -1 && rosterList.get(matchRosterIndex).stuList.size() <= session.limit) {
+        if(matchRosterIndex != -1 && rosterList.get(matchRosterIndex).stuList.size() < session.limit) {
             rosterList.get(matchRosterIndex).stuList.add(student);
             return true;
         }
         return false;
+    }
+
+    public void printRoster() {
+        for(Roster roster: rosterList) {
+            System.out.println(roster);
+        }
     }
 }

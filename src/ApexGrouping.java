@@ -34,21 +34,33 @@ public class ApexGrouping {
 //
         Configuration t = test.generateBestConfig(1);
         System.out.println("before: " + t.configScore);
-        Round round = t.rounds.get(0);
-        round.printRoster();
+//      round.printRoster();
+        System.out.println("add" + t.count[0]);
+        System.out.println(t.count[1]);
+        System.out.println(t.count[2]);
+       System.out.println(t.count[3]);
 
 //
         for(Round rounds: t.rounds) {
-//                for(int i = 0; i < 4; i++) {
-//                    round.improveScoreStudentByStudent(i);
-//
-//                }
             rounds.improveScoreStudentByStudent(studentList,0);
+            rounds.improveScoreStudentByStudent(studentList,4);
+
+            rounds.improveScoreStudentByStudent(studentList,3);
+            rounds.fillNoPreferenceStudents(studentList);
+
+//            rounds.improveScoreStudentByStudent(studentList,0);
+//            System.out.println("0");
+//            round.printRoster();
+//            rounds.improveScoreStudentByStudent(studentList,4);
+//            System.out.println("4");
+//            round.printRoster();
+
+
 
         }
-
+        t.score();
         System.out.println("after: " + t.configScore);
-        round.printRoster();
+//        round.printRoster();
 
 
 //        System.out.println("wjdaidwodwnadwndo  " + test.configs.get(0).count[0]);
@@ -96,7 +108,7 @@ public class ApexGrouping {
     public void readFile() {
         try {
             int maxSessions = 0;
-            Reader file1 = Files.newBufferedReader(Paths.get("./Test Sessions2.csv"));
+            Reader file1 = Files.newBufferedReader(Paths.get("./Apex Sessions.csv"));
             CSVParser csvParser = new CSVParser(file1, CSVFormat.DEFAULT);
             for (CSVRecord csvRecord : csvParser) {
                 if(csvRecord.getRecordNumber() != 1) {
@@ -106,7 +118,7 @@ public class ApexGrouping {
                     sessionList.add(new Session(csvRecord.get(1),Integer.parseInt(csvRecord.get(0)),Integer.parseInt(csvRecord.get(2))));
                 }
             }
-            Reader file2 = Files.newBufferedReader(Paths.get("./Test Signups2.csv"));
+            Reader file2 = Files.newBufferedReader(Paths.get("./Apex Signups.csv"));
             CSVParser csvParser2 = new CSVParser(file2, CSVFormat.DEFAULT);
             for (CSVRecord csvRecord : csvParser2) {
                 if(csvRecord.getRecordNumber() != 1) {
@@ -119,7 +131,7 @@ public class ApexGrouping {
                         int round = Integer.parseInt(csvRecord.get(i));
                         list[round-1].add(getSession(csvRecord.get(i+1)));
                         if(getSession(csvRecord.get(i+1)) == null) {
-                            System.out.println("Student " + stu.getName() + " - round " + round + " - preferences not found: " + csvRecord.get(i+1));
+                         //   System.out.println("Student " + stu.getName() + " - round " + round + " - preferences not found: " + csvRecord.get(i+1));
                         }
                     }
                     stu.setPrefer(list);

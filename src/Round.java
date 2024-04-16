@@ -100,24 +100,28 @@ public class Round {
         } else {
             students = retrieveStudentsHaving0Prefer(stuList);
         }
-        studentloop:
         for(Student student: students) {
             if(preferNum == 0) {
                 for(int i = 1; i <= 4;i++) {
                     Session session = student.prefer[round-1].get(i-1);
-                    if(bump(session,this.scoreChange[preferNum][i])) {
+                    if(session != null && bump(session,this.scoreChange[preferNum][i])) {
                         addStudent(session, student);
-                        break studentloop;
+                        break;
                     }
                 }
             } else {
+                student.prefer[round-1].get(preferNum-1).limit++;
                 for(int i = 1; i <= preferNum;i++) {
                     Session session = student.prefer[round-1].get(i-1);
-                    if(bump(session,this.scoreChange[preferNum][i])) {
-                        addStudent(session, student);
-                        break studentloop;
+                    if(session != null && bump(session,this.scoreChange[preferNum][i])) {
+                        if(!addStudent(session, student)) {
+                            System.out.println("cannot add correctly after bump");
+                        }
+                        removeStuFromRoster(student, student.prefer[round-1].get(preferNum-1));
+                        break;
                     }
                 }
+                student.prefer[round-1].get(preferNum-1).limit--;
             }
         }
         return false;
@@ -137,7 +141,7 @@ public class Round {
         int currentPrefer = student.getPreferenceIndex(session);
         for(int i = currentPrefer+1; i <= 4; i++) {
             if(Math.abs(scoreChange[currentPrefer][i]) < bumpScore) {
-                if(addStudent(student.prefer[round-1].get(currentPrefer), student)) {
+                if(addStudent(student.prefer[round-1].get(i-1), student)) {
                     removeStuFromRoster(student, session);
                     return true;
                 }
@@ -200,6 +204,24 @@ public class Round {
     public void printRoster() {
         for(Roster roster: rosterList) {
             System.out.println(roster);
+        }
+    }
+
+    public Roster findMinRoster() {
+        Roster smallest = this.rosterList.get(0);
+        for(Roster roster: this.rosterList) {
+            if(((double) roster.stuList.size() / roster.session.limit) < ((double) smallest.stuList.size() / smallest.session.limit)) {
+                smallest = roster;
+            }
+        }
+        return smallest;
+    }
+
+    public void fillNoPreferenceStudents(ArrayList<Student> stuList) {
+        ArrayList<Student> students = retrieveStudentsHaving0Prefer(stuList);
+        for(Student student: students) {
+            Roster rosterToAdd = findMinRoster();
+            rosterToAdd.stuList.add(student);
         }
     }
 }

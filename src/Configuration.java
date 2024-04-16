@@ -10,6 +10,7 @@ public class Configuration {
     }
 
     public void score() {
+        configScore = 0.0;
         count = new int[4];
         for(Round round: rounds) {
             round.score();

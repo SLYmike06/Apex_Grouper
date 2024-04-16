@@ -34,7 +34,7 @@ public class Roster {
             Student curr = stuList.get(i);
             ArrayList<Session> listOfPrefer = curr.prefer[round-1];
             for (int k = 0; k < listOfPrefer.size(); k++) {
-               if(listOfPrefer.get(k) == session) {
+               if(listOfPrefer.get(k) != null && listOfPrefer.get(k) == session) {
                        switch (k) {
                            case 0:
                                rosterScore += 4;

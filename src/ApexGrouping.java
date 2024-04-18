@@ -35,10 +35,15 @@ public class ApexGrouping {
         Configuration t = test.generateBestConfig(1);
         System.out.println("before: " + t.configScore);
 //      round.printRoster();
-        System.out.println("add" + t.count[0]);
-        System.out.println(t.count[1]);
-        System.out.println(t.count[2]);
-       System.out.println(t.count[3]);
+
+        System.out.println("First preference for round one : " + t.rounds.get(0).count[0]);
+        System.out.println("First preference for round one : " + t.rounds.get(0).count[1]);
+        System.out.println("First preference for round one : " + t.rounds.get(0).count[2]);
+        System.out.println("First preference for round one : " + t.rounds.get(0).count[3]);
+        System.out.println("Second preference: " + t.count[1]);
+        System.out.println("Third preference: " + t.count[2]);
+        System.out.println("Fourth preference: " + t.count[3]);
+        System.out.println("Total students that got their preference: " + (t.count[0] + t.count[1] + t.count[2] + t.count[3]));
 
 //
         for(Round rounds: t.rounds) {

@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Roster {
     public Session session;
@@ -33,8 +35,9 @@ public class Roster {
         for (int i = 0; i < stuList.size(); i++) {
             Student curr = stuList.get(i);
             ArrayList<Session> listOfPrefer = curr.prefer[round-1];
+            Set<Session> set = new HashSet<Session>();
             for (int k = 0; k < listOfPrefer.size(); k++) {
-               if(listOfPrefer.get(k) != null && listOfPrefer.get(k) == session) {
+               if(listOfPrefer.get(k) != null && listOfPrefer.get(k) == session && !set.contains(listOfPrefer.get(k))) {
                        switch (k) {
                            case 0:
                                rosterScore += 4;
@@ -57,6 +60,7 @@ public class Roster {
                                break;
                    }
                }
+               set.add(listOfPrefer.get(k));
             }
         }
     }

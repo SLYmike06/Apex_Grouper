@@ -166,10 +166,10 @@ public class Round {
     public void printRound() {
         int rosterSize = 0;
         for(Roster roster: rosterList) {
-            System.out.println(roster.stuList.size());
+         //   System.out.println(roster.stuList.size());
             rosterSize += roster.stuList.size();
         }
-        System.out.println(rosterSize);
+     //   System.out.println(rosterSize);
     }
 
     public int findRoster(Session session) {

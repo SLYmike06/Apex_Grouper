@@ -81,11 +81,8 @@ public class Round {
         ArrayList<Student> total = new ArrayList<Student>();
             for (Roster roster : this.rosterList) {
                 for (Student student : roster.stuList) {
-                    ArrayList<Session> preference = student.prefer[round - 1];
-                    for (int i = 0; i < preference.size(); i++) {
-                        if (roster.session == preference.get(i) && i + 1 == preferenceNumber) {
+                    if(student.getPreferenceIndex(roster.session) == preferenceNumber) {
                             total.add(student);
-                        }
                     }
                 }
             }
@@ -126,10 +123,16 @@ public class Round {
         }
         return false;
     }
+
+    //int i = roster.stuList.size()-1; i >= 0; i--
+
     //bump tries to push a student out of this session, returns true if succeussful
     public boolean bump(Session session, double bumpScore) {
         Roster roster = getRosterFromSession(session);
-        for(int i = roster.stuList.size()-1; i >= 0; i--) {
+        for(int i = 0; i <= roster.stuList.size()-1; i++) {
+            if(roster.stuList.get(i).getName().indexOf("Lillian") == 0) {
+                int a = 0;
+            }
             if(bumpStudent(roster.stuList.get(i),session, bumpScore)){
                 return true;
             }

@@ -26,20 +26,12 @@ public class ApexGrouping {
 
     public static void main(String[] args) {
         ApexGrouping test = new ApexGrouping();
-      //  test.printSession();
-      //  test.printStudent();
-       // test.printPreferences();
-//        test.generateRandomConfig();
-//        test.configs.get(0).score();
-//
+
         Configuration t = test.generateBestConfig(1);
         System.out.println("before: " + t.configScore);
 //      round.printRoster();
 
-        System.out.println("First preference for round one : " + t.rounds.get(0).count[0]);
-        System.out.println("First preference for round one : " + t.rounds.get(0).count[1]);
-        System.out.println("First preference for round one : " + t.rounds.get(0).count[2]);
-        System.out.println("First preference for round one : " + t.rounds.get(0).count[3]);
+        System.out.println("First preference for round one : " + t.count[0]);
         System.out.println("Second preference: " + t.count[1]);
         System.out.println("Third preference: " + t.count[2]);
         System.out.println("Fourth preference: " + t.count[3]);
@@ -51,6 +43,18 @@ public class ApexGrouping {
             rounds.improveScoreStudentByStudent(studentList,4);
 
             rounds.improveScoreStudentByStudent(studentList,3);
+//            ArrayList<Roster> rosters = t.rounds.get(0).rosterList;
+//            for(Roster roster: rosters) {
+//                System.out.println(roster);
+//            }
+            rounds.score();
+            System.out.println("AFTER: First preference for round one : " + rounds.count[0]);
+            System.out.println("AFTER: Second preference: " + rounds.count[1]);
+            System.out.println("AFTER: Third preference: " + rounds.count[2]);
+            System.out.println("AFTER: Fourth preference: " + rounds.count[3]);
+            System.out.println("AFTER: Total students that got their preference: " + (rounds.count[0] + rounds.count[1] + rounds.count[2] + rounds.count[3]));
+            System.out.println("Round number: " + rounds.round + " Score:" + rounds.roundScore);
+
             rounds.fillNoPreferenceStudents(studentList);
 
 //            rounds.improveScoreStudentByStudent(studentList,0);
@@ -65,6 +69,11 @@ public class ApexGrouping {
         }
         t.score();
         System.out.println("after: " + t.configScore);
+        System.out.println("First preference for round one : " + t.count[0]);
+        System.out.println("Second preference: " + t.count[1]);
+        System.out.println("Third preference: " + t.count[2]);
+        System.out.println("Fourth preference: " + t.count[3]);
+        System.out.println("Total students that got their preference: " + (t.count[0] + t.count[1] + t.count[2] + t.count[3]));
 //        round.printRoster();
 
 
@@ -178,7 +187,7 @@ public class ApexGrouping {
 
     public void generateRandomConfig() {
         Configuration config = new Configuration();
-        for(int i = 1 ; i <= 1; i ++) {
+        for(int i = 1; i <= 4; i ++) {
             Round round = new Round(i, sessionList);
             round.generateRandomRound(studentList);
             round.score();

@@ -25,6 +25,8 @@ public class Roster {
         for (Student student: stuList ) {
             output.append(" Student: " + student.getName());
         }
+//        return output.toString();
+        output.append(" Roster Score: " + rosterScore + "   Score: " + count[0] + " " + count[1] + " " + count[2] + " " + count[3]);
         return output.toString();
     }
 
@@ -32,6 +34,9 @@ public class Roster {
     public void score(int round) {
         rosterScore = 0;
         count = new int[4];
+        if(session.presentation.indexOf("Sist") == 0) {
+            int a = 0;
+        }
         for (int i = 0; i < stuList.size(); i++) {
             Student curr = stuList.get(i);
             ArrayList<Session> listOfPrefer = curr.prefer[round-1];
@@ -56,7 +61,7 @@ public class Roster {
                            case 3:
                                rosterScore += 1.6;
                                count[3]++;
-
+                            //   System.out.println(curr);
                                break;
                    }
                }

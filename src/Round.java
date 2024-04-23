@@ -130,7 +130,7 @@ public class Round {
     public boolean bump(Session session, double bumpScore) {
         Roster roster = getRosterFromSession(session);
         for(int i = 0; i <= roster.stuList.size()-1; i++) {
-            if(roster.stuList.get(i).getName().indexOf("Lillian") == 0) {
+            if(roster.stuList.get(i).getName().indexOf("Sadie Scott") == 0) {
                 int a = 0;
             }
             if(bumpStudent(roster.stuList.get(i),session, bumpScore)){
@@ -211,6 +211,9 @@ public class Round {
     }
 
     public Roster findMinRoster() {
+        if(round == 3) {
+            int a = 0;
+        }
         Roster smallest = this.rosterList.get(0);
         for(Roster roster: this.rosterList) {
             if(((double) roster.stuList.size() / roster.session.limit) < ((double) smallest.stuList.size() / smallest.session.limit)) {
@@ -227,4 +230,12 @@ public class Round {
             rosterToAdd.stuList.add(student);
         }
     }
+
+//    public String toString() {
+////        StringBuilder output = new StringBuilder();
+////        for (Roster ros: rosterList ) {
+////            output.append(ros);
+////        }
+////        return output.toString();
+//    }
 }

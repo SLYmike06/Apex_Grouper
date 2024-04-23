@@ -28,4 +28,12 @@ public class Configuration {
         count = new int[4];
 
     }
+
+//    public String toString() {
+////        StringBuilder output = new StringBuilder();
+////        for (Round round: rounds ) {
+////            output.append(round);
+////        }
+////        return output.toString();
+//    }
 }

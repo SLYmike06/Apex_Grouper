@@ -22,6 +22,7 @@ public class Student {
             }
         }
         return output.toString();
+        //return name;
     }
 
     public int getPreferenceIndex(Session session) {

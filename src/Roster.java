@@ -25,9 +25,16 @@ public class Roster {
         for (Student student: stuList ) {
             output.append(" Student: " + student.getName());
         }
-//        return output.toString();
         output.append(" Roster Score: " + rosterScore + "   Score: " + count[0] + " " + count[1] + " " + count[2] + " " + count[3]);
         return output.toString();
+//        StringBuilder output = new StringBuilder("Group Title: " + session);
+//        for (Student student: stuList ) {
+//            output.append(student + " ");
+//        }
+//        output.append("\n");
+//
+//        //output.append("Roster Score: " + rosterScore);
+//        return output.toString();
     }
 
 
